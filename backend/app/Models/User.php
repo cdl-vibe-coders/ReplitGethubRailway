@@ -21,6 +21,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
+        'first_name',
+        'last_name',
+        'phone',
+        'date_of_birth',
+        'address',
+        'emergency_contact',
+        'emergency_phone',
+        'preferences',
+        'profile_image',
+        'is_active',
     ];
 
     /**
@@ -43,6 +54,41 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
+            'preferences' => 'json',
+            'is_active' => 'boolean',
+            'last_login_at' => 'datetime',
         ];
+    }
+
+    // Relationships
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function trainedCourses()
+    {
+        return $this->hasMany(Course::class, 'trainer_id');
+    }
+
+    public function trainingSessions()
+    {
+        return $this->hasMany(TrainingSession::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
     }
 }
